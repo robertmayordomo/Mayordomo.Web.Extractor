@@ -12,7 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Mayordomo.Web.Extractor.HtmlAgilityPack\Mayordomo.Web.Extractor.HtmlAgilityPack.csproj" />
 		<ProjectReference Include="..\Mayordomo.Web.Extractor.HtmlAgilityPack\Mayordomo.Web.Extractor.HtmlAgilityPack.csproj" />
 		<ProjectReference Include="..\Mayordomo.Web.Extractor\Mayordomo.Web.Extractor.csproj" />
 	</ItemGroup>

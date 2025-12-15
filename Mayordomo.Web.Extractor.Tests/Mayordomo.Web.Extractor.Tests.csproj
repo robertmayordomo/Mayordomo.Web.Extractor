@@ -15,7 +15,6 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Mayordomo.Web.Extractor.HtmlAgilityPack\Mayordomo.Web.Extractor.HtmlAgilityPack.csproj" />
 	  <ProjectReference Include="..\Mayordomo.Web.Extractor.HtmlAgilityPack\Mayordomo.Web.Extractor.HtmlAgilityPack.csproj" />
 	  <ProjectReference Include="..\Mayordomo.Web.Extractor\Mayordomo.Web.Extractor.csproj" />
 	</ItemGroup>
