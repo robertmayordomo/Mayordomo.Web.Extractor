@@ -4,6 +4,18 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- NuGet packaging metadata -->
+    <PackageId>Mayordomo.Web.Extractor</PackageId>
+    <Authors>Robert Mayordomo</Authors>
+    <Company>Mayordomo</Company>
+    <Description>Small, modular .NET 10 library to extract article content, images and metadata from web pages.</Description>
+    <PackageTags>extractor;web;html;readability</PackageTags>
+    <RepositoryUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <!-- Default version will be overridden by CI using /p:PackageVersion -->
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,44 +1,142 @@
-name: Publish NuGet Packages
+name: Publish to NuGet
 
 on:
-  push:
-    branches:
-      - main
-      - master
   workflow_dispatch:
+    inputs:
+      publish-to-nuget:
+        description: 'Publish to NuGet.org'
+        required: true
+        type: boolean
+        default: true
+      publish-to-github:
+        description: 'Publish to GitHub Packages'
+        required: true
+        type: boolean
+        default: false
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  PROJECT_PATH: 'Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj'
 
 jobs:
-  publish:
+  build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
-        fetch-depth: 0  # Fetch all history for commit count
+        fetch-depth: 0  # Required for commit count
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '10.0.x'
-    
-    - name: Get commit count
-      id: commit_count
+    - name: Calculate version from commit count
+      id: version
       run: |
         COMMIT_COUNT=$(git rev-list --count HEAD)
-        echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
-        echo "Commit count: $COMMIT_COUNT"
+        VERSION="1.1.$COMMIT_COUNT"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+        echo "Calculated version: $VERSION (based on $COMMIT_COUNT commits)"
+    
+    - name: Display Version Information
+      run: |
+        echo "Version: ${{ steps.version.outputs.version }}"
+        echo "Commit Count: ${{ steps.version.outputs.commit_count }}"
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
     
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj
     
     - name: Build
-      run: dotnet build --configuration Release --no-restore /p:Version=0.1.${{ steps.commit_count.outputs.count }}
+      run: |
+        dotnet build ./Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj --configuration Release --no-restore \
+          /p:Version=${{ steps.version.outputs.version }} \
+          /p:AssemblyVersion=${{ steps.version.outputs.version }} \
+          /p:FileVersion=${{ steps.version.outputs.version }} \
+          /p:InformationalVersion=${{ steps.version.outputs.version }} \
+          /p:CI=true
     
-    - name: Pack
-      run: dotnet pack --configuration Release --no-build --output ./artifacts /p:PackageVersion=0.1.${{ steps.commit_count.outputs.count }}
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal
     
-    - name: Publish to NuGet
-      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Pack NuGet Packages
+      run: |
+        dotnet pack ./Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj \
+          --configuration Release \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.version.outputs.version }} \
+          /p:Version=${{ steps.version.outputs.version }} \
+          /p:AssemblyVersion=${{ steps.version.outputs.version }} \
+          /p:FileVersion=${{ steps.version.outputs.version }} \
+          /p:InformationalVersion=${{ steps.version.outputs.version }} \
+          /p:CI=true
+    
+    - name: Display packages to publish
+      run: |
+        echo "=== NuGet Packages (.nupkg) ==="
+        ls -lh ./artifacts/*.nupkg
+        echo ""
+        echo "=== Symbol Packages (.snupkg) ==="
+        ls -lh ./artifacts/*.snupkg || echo "No symbol packages found"
+    
+    - name: Publish to NuGet.org
+      if: inputs.publish-to-nuget != false && (github.event_name == 'release' || github.event_name == 'push' || inputs.publish-to-nuget == true)
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        dotnet nuget push ./artifacts/*.nupkg \
+          --api-key $NUGET_API_KEY \
+          --source https://api.nuget.org/v3/index.json \
+          --skip-duplicate
+    
+    - name: Publish Symbols to NuGet.org
+      if: inputs.publish-to-nuget != false && (github.event_name == 'release' || github.event_name == 'push' || inputs.publish-to-nuget == true)
+      continue-on-error: true
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        if ls ./artifacts/*.snupkg 1> /dev/null 2>&1; then
+          dotnet nuget push ./artifacts/*.snupkg \
+            --api-key $NUGET_API_KEY \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+        else
+          echo "No symbol packages to publish"
+        fi
+    
+    - name: Publish to GitHub Packages
+      if: inputs.publish-to-github == true || github.event_name == 'release'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet nuget push ./artifacts/*.nupkg \
+          --api-key $GITHUB_TOKEN \
+          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+          --skip-duplicate
+    
+    - name: Upload NuGet Package Artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: nuget-packages-${{ steps.version.outputs.version }}
+        path: ./artifacts/*.nupkg
+        retention-days: 90
+    
+    - name: Upload Symbol Package Artifact
+      uses: actions/upload-artifact@v6
+      if: always()
+      with:
+        name: symbol-packages-${{ steps.version.outputs.version }}
+        path: ./artifacts/*.snupkg
+        retention-days: 90
