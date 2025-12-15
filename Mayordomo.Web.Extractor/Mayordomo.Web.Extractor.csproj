@@ -13,6 +13,7 @@
 		<PackageTags>mayordomo;web-extractor;html;readability;article;metadata;parsing</PackageTags>
 		<RepositoryUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor#readme</PackageProjectUrl>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<!-- Default version will be overridden by CI using /p:PackageVersion -->
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -23,7 +24,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="RELEASE_NOTES.md" Pack="true" PackagePath="" />
+		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 	<ItemGroup>
