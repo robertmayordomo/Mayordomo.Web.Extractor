@@ -41,7 +41,5 @@
 		<ProjectReference Include="..\Mayordomo.Web.Extractor.Abstractions\Mayordomo.Web.Extractor.Abstractions.csproj" />
 		<ProjectReference Include="..\Mayordomo.Web.Extractor.HtmlAgilityPack\Mayordomo.Web.Extractor.HtmlAgilityPack.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-	</ItemGroup>
+	
 </Project>
