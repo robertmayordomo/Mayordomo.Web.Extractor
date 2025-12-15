@@ -1,0 +1,63 @@
+mode: ContinuousDelivery
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatch
+next-version: 0.1.0
+branches:
+  main:
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: ^master$|^main$
+    source-branches: ['develop', 'release']
+    tracks-release-branches: false
+    is-release-branch: true
+    is-mainline: true
+  develop:
+    tag: alpha
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    regex: ^dev(elop)?(ment)?$
+    source-branches: []
+    tracks-release-branches: true
+    is-release-branch: false
+    is-mainline: false
+  release:
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: ^releases?[/-]
+    source-branches: ['develop', 'main', 'master', 'support', 'release']
+    tracks-release-branches: false
+    is-release-branch: true
+    is-mainline: false
+  feature:
+    tag: alpha.{BranchName}
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    regex: ^features?[/-]
+    source-branches: ['develop', 'main', 'master', 'release', 'feature', 'support', 'hotfix']
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+  hotfix:
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    regex: ^hotfix(es)?[/-]
+    source-branches: ['develop', 'main', 'master', 'support']
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+ignore:
+  sha: []
+merge-message-formats: {}
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+no-bump-message: '\+semver:\s?(none|skip)'
+tag-prefix: 'v'
