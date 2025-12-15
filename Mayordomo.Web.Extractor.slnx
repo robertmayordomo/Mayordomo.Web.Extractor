@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Mayordomo.Web.Extractor.Abstractions/Mayordomo.Web.Extractor.Abstractions.csproj" Id="3f206086-24b0-49f0-bc96-9fa1984db348" />
+  <Project Path="Mayordomo.Web.Extractor.Benchmarks/Mayordomo.Web.Extractor.Benchmarks.csproj" />
+  <Project Path="Mayordomo.Web.Extractor.HtmlAgilityPack/Mayordomo.Web.Extractor.HtmlAgilityPack.csproj" />
+  <Project Path="Mayordomo.Web.Extractor.TestConsole/Mayordomo.Web.Extractor.TestConsole.csproj" Id="b751b1dc-d1bb-412b-8e9a-21bef8708e69" />
+  <Project Path="Mayordomo.Web.Extractor.Tests/Mayordomo.Web.Extractor.Tests.csproj" Id="57f81e9c-6f00-493b-9464-70f700f74d5d" />
+  <Project Path="Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj" />
+</Solution>

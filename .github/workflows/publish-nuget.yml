@@ -1,0 +1,44 @@
+name: Publish NuGet Packages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for commit count
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+    
+    - name: Get commit count
+      id: commit_count
+      run: |
+        COMMIT_COUNT=$(git rev-list --count HEAD)
+        echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+        echo "Commit count: $COMMIT_COUNT"
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --configuration Release --no-restore /p:Version=0.1.${{ steps.commit_count.outputs.count }}
+    
+    - name: Pack
+      run: dotnet pack --configuration Release --no-build --output ./artifacts /p:PackageVersion=0.1.${{ steps.commit_count.outputs.count }}
+    
+    - name: Publish to NuGet
+      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
