@@ -21,10 +21,20 @@
 		<!-- Release notes and package readme -->
 		<PackageReleaseNotes>Initial public package with core extractors, HTML AgilityPack and AngleSharp implementations, unit tests and benchmarks.</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<!-- Build Output Configuration -->
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+		<!-- Source Link for debugging -->
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
