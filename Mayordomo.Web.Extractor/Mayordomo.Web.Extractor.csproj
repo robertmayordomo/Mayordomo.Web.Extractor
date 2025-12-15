@@ -7,34 +7,34 @@
 
 		<!-- NuGet packaging metadata -->
 		<PackageId>Mayordomo.Web.Extractor</PackageId>
-		<Authors>Robert Butler</Authors>
+		<Authors>Robert Mayordomo</Authors>
 		<Company>Mayordomo</Company>
 		<Description>Small, modular .NET 10 library to extract article content, images and metadata from web pages.</Description>
-		<Copyright>Copyright © $(Company) $([System.DateTime]::Now.Year)</Copyright>
-		<PackageTags>extractor;web;html;readability</PackageTags>
+		<PackageTags>mayordomo;web-extractor;html;readability;article;metadata;parsing</PackageTags>
 		<RepositoryUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<!-- Default version will be overridden by CI using /p:PackageVersion -->
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+		<!-- Release notes and package readme -->
+		<PackageReleaseNotes>Initial public package with core extractors, HTML AgilityPack and AngleSharp implementations, unit tests and benchmarks.</PackageReleaseNotes>
+		<PackageReadmeFile>RELEASE_NOTES.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+		<None Include="RELEASE_NOTES.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
 		<PackageReference Include="StackExchange.Redis" Version="2.10.1" />
-		<PackageReference Include="Validated.Primitives" Version="1.1.67" />
+		<PackageReference Include="Validated.Primitives" Version="1.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
