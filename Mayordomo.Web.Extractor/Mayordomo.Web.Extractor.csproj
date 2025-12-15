@@ -20,7 +20,7 @@
 
 		<!-- Release notes and package readme -->
 		<PackageReleaseNotes>Initial public package with core extractors, HTML AgilityPack and AngleSharp implementations, unit tests and benchmarks.</PackageReleaseNotes>
-		<PackageReadmeFile>RELEASE_NOTES.md</PackageReadmeFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
