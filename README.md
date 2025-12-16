@@ -20,6 +20,110 @@ Requirements
 - .NET 10 SDK
 - Optional: `dotnet-ef` or other tooling only if needed for local tasks
 
+Usage examples
+--------------
+Quick extraction via the default HTTP helper:
+
+```csharp
+using Mayordomo.Web.Extractor.Extraction;
+
+var extractor = HttpArticleExtractor.CreateDefault();
+var article = await extractor.ExtractFromUrlAsync(
+    "https://www.example.com/news/story");
+
+Console.WriteLine(article.Title);
+Console.WriteLine(article.Excerpt);
+foreach (var image in article.Images)
+{
+    Console.WriteLine($"Image: {image.Url}");
+}
+```
+
+Register the library in an ASP.NET Core or worker service using the provided DI extension:
+
+```csharp
+using Mayordomo.Web.Extractor;
+using Mayordomo.Web.Extractor.Configuration;
+
+builder.Services.AddArticleExtraction(builder.Configuration, "ArticleExtraction", options =>
+{
+    options.EnableImageFileCache = true;
+    options.ImageFileCachePath = Path.Combine(builder.Environment.ContentRootPath, "wwwroot/images");
+});
+```
+
+Expose the extractor through a minimal API endpoint:
+
+```csharp
+using Mayordomo.Web.Extractor.Extraction;
+
+var app = builder.Build();
+
+app.MapGet("/api/article", async (
+        [FromServices] IHttpArticleExtractor extractor,
+        [FromQuery] string url,
+        CancellationToken token) =>
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return Results.BadRequest("Url query parameter is required.");
+        }
+
+        var article = await extractor.ExtractFromUrlAsync(url, cancellationToken: token);
+        return Results.Ok(article);
+    })
+   .Produces<ArticleContent>()
+   .WithName("GetArticle");
+
+app.Run();
+```
+
+Or wire it up in a conventional API controller:
+
+```csharp
+using Mayordomo.Web.Extractor.Extraction;
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ArticleController : ControllerBase
+{
+    private readonly IHttpArticleExtractor _extractor;
+
+    public ArticleController(IHttpArticleExtractor extractor)
+    {
+        _extractor = extractor;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] string url, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return BadRequest("Url query parameter is required.");
+        }
+
+        var article = await _extractor.ExtractFromUrlAsync(url, cancellationToken: token);
+        return Ok(article);
+    }
+}
+```
+
+Example configuration section consumed by `AddArticleExtraction`:
+
+```json
+{
+  "ArticleExtraction": {
+    "Parser": "HtmlAgilityPack",
+    "UseRedis": false,
+    "EnableImageFileCache": true,
+    "ImageFileCachePath": "wwwroot/article-images",
+    "ImageFileCacheBaseUrl": "/article-images",
+    "IgnoreImageDownloadErrors": true
+  }
+}
+```
+
 Build
 -----
 Restore and build all projects:
