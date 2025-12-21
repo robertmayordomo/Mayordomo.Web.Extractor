@@ -21,7 +21,7 @@ on:
 
 env:
   DOTNET_VERSION: '10.0.x'
-  PROJECT_PATH: 'Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj'
+  PROJECT_PATH: 'ReadableWeb/ReadableWeb.csproj'
 
 jobs:
   build-and-publish:
@@ -56,11 +56,11 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     
     - name: Restore dependencies
-      run: dotnet restore ./Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj
+      run: dotnet restore ./ReadableWeb/ReadableWeb.csproj
     
     - name: Build
       run: |
-        dotnet build ./Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj --configuration Release --no-restore \
+        dotnet build ./ReadableWeb/ReadableWeb.csproj --configuration Release --no-restore \
           /p:Version=${{ steps.version.outputs.version }} \
           /p:AssemblyVersion=${{ steps.version.outputs.version }} \
           /p:FileVersion=${{ steps.version.outputs.version }} \
@@ -72,7 +72,7 @@ jobs:
     
     - name: Pack NuGet Packages
       run: |
-        dotnet pack ./Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj \
+        dotnet pack ./ReadableWeb/ReadableWeb.csproj \
           --configuration Release \
           --no-build \
           --output ./artifacts \

@@ -8,9 +8,9 @@ on:
 
 env:
   DOTNET_VERSION: '10.0.x'
-  PROJECT_PATH: 'Mayordomo.Web.Extractor/Mayordomo.Web.Extractor.csproj'
-  DOMAIN_PROJECT_PATH: 'Mayordomo.Web.Extractor.Abstractions/Mayordomo.Web.Extractor.Abstractions.csproj'
-  TEST_PROJECT_PATH: 'Mayordomo.Web.Extractor.Tests/Mayordomo.Web.Extractor.Tests.csproj'  
+  PROJECT_PATH: 'ReadableWeb/ReadableWeb.csproj'
+  DOMAIN_PROJECT_PATH: 'ReadableWeb.Abstractions/ReadableWeb.Abstractions.csproj'
+  TEST_PROJECT_PATH: 'ReadableWeb.Tests/ReadableWeb.Tests.csproj'  
 
 jobs:
   build-and-test:

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ReadableWeb.Abstractions/ReadableWeb.Abstractions.csproj" />
+  <Project Path="ReadableWeb.HtmlAgilityPack/ReadableWeb.HtmlAgilityPack.csproj" />
+  <Project Path="ReadableWeb.Tests/ReadableWeb.Tests.csproj" />
+  <Project Path="ReadableWeb/ReadableWeb.csproj" />
+</Solution>
