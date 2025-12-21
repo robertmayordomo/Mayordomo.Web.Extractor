@@ -6,20 +6,19 @@
 		<Nullable>enable</Nullable>
 
 		<!-- NuGet packaging metadata -->
-		<PackageId>Mayordomo.Web.Extractor</PackageId>
-		<Authors>Robert Mayordomo</Authors>
-		<Company>Mayordomo</Company>
-		<Description>Small, modular .NET 10 library to extract article content, images and metadata from web pages.</Description>
-		<PackageTags>mayordomo;web-extractor;html;readability;article;metadata;parsing</PackageTags>
-		<RepositoryUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</RepositoryUrl>
+		<PackageId>ReadableWeb</PackageId>
+		<Title>ReadableWeb</Title>
+		<Description>ReadableWeb extracts readable article content, images and metadata from HTML. Small, modular .NET 10 library for article extraction and readability parsing.</Description>
+		<PackageTags>readability;article-extraction;html;web-scraping;extractor;readability-parser;html-parser;readableweb</PackageTags>
+		<PackageProjectUrl>https://github.com/robertmayordomo/ReadableWeb</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/robertmayordomo/ReadableWeb</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor#readme</PackageProjectUrl>
+		<Authors>robertmayordomo</Authors>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<!-- Default version will be overridden by CI using /p:PackageVersion -->
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 
 		<!-- Release notes and package readme -->
-		<PackageReleaseNotes>Initial public package with core extractors, HTML AgilityPack and AngleSharp implementations, unit tests and benchmarks.</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<!-- Build Output Configuration -->
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
