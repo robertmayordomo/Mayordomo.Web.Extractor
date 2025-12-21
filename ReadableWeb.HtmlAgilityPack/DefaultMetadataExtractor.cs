@@ -26,7 +26,8 @@ public class DefaultMetadataExtractor : IMetadataExtractor
                 title = normOg;
         }
 
-        return title;
+        var decodedText = HtmlEntity.DeEntitize(title);
+        return decodedText;
     }
 
     private string ExtractSiteNameInternal(HtmlDocument doc)
@@ -36,7 +37,7 @@ public class DefaultMetadataExtractor : IMetadataExtractor
             ?.GetAttributeValue("content", null);
 
         if (!string.IsNullOrWhiteSpace(ogSiteName))
-            return ExtractionUtils.NormalizeWhitespace(ogSiteName);
+            return HtmlEntity.DeEntitize(ExtractionUtils.NormalizeWhitespace(ogSiteName));
 
         return "";
     }
@@ -58,7 +59,7 @@ public class DefaultMetadataExtractor : IMetadataExtractor
             var node = doc.DocumentNode.SelectSingleNode(path);
             var val = node?.GetAttributeValue("content", null);
             if (!string.IsNullOrWhiteSpace(val))
-                return ExtractionUtils.NormalizeWhitespace(val);
+                return HtmlEntity.DeEntitize(ExtractionUtils.NormalizeWhitespace(val));
         }
 
         var bylineNodes = doc.DocumentNode
@@ -71,14 +72,14 @@ public class DefaultMetadataExtractor : IMetadataExtractor
             if (txt.Length > 3 && txt.Length < 200)
             {
                 var cleaned = Regex.Replace(txt, @"^\s*by\s+", "", RegexOptions.IgnoreCase);
-                return cleaned.Trim();
+                return HtmlEntity.DeEntitize(cleaned.Trim());
             }
         }
 
         var bodyText = ExtractionUtils.GetInnerText(doc.DocumentNode);
         var match = Regex.Match(bodyText, @"by\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)");
         if (match.Success)
-            return match.Groups[1].Value.Trim();
+            return HtmlEntity.DeEntitize(match.Groups[1].Value.Trim());
 
         return "";
     }
@@ -91,7 +92,7 @@ public class DefaultMetadataExtractor : IMetadataExtractor
         static DateTime? ParseDate(string? value, CultureInfo culture)
         {
             if (string.IsNullOrWhiteSpace(value)) return null;
-            value = value.Trim();
+            value = HtmlEntity.DeEntitize(value).Trim();
 
             if (DateTime.TryParse(value, CultureInfo.InvariantCulture,
                     DateTimeStyles.AdjustToUniversal | DateTimeStyles.AllowWhiteSpaces, out var dt))

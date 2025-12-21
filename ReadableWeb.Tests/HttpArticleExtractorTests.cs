@@ -188,5 +188,29 @@ namespace ReadableWeb.Tests
 
             Directory.Delete(tempDir, recursive: true);
         }
+
+        [Fact]
+        public async Task ExtractFromUrl_BbcArticle_ParsesTitleContentAndImages()
+        {
+            var url = "https://www.bbc.co.uk/news/articles/c20kymmxmxgo";
+
+            using var httpClient = new HttpClient();
+            var html = await httpClient.GetStringAsync(url);
+
+            var extractor = GetExtractor();
+            var article = extractor.Extract(html, new ExtractionOptions { Url = url });
+
+            article.ShouldNotBeNull();
+            article.Url.ShouldBe(url);
+            article.Title.ShouldNotBeNullOrWhiteSpace();
+            article.Title.ShouldContain("Kate Winslet");
+            article.TextContent.ShouldNotBeNullOrWhiteSpace();
+            article.TextContent!.Length.ShouldBeGreaterThan(500);
+            article.TextContent.ShouldContain("A good meal and a good poo");
+            article.TextContent.ShouldNotContain("&#x27;");
+            article.TextContent.ShouldNotContain("&#x");
+            article.TextContent.ShouldNotContain("&#");
+            article.Images.ShouldNotBeEmpty();
+        }
     }
 }
