@@ -194,8 +194,8 @@ namespace ReadableWeb.Tests
         {
             var url = "https://www.bbc.co.uk/news/articles/c20kymmxmxgo";
 
-            using var httpClient = new HttpClient();
-            var html = await httpClient.GetStringAsync(url);
+            var fixturePath = Path.Combine(AppContext.BaseDirectory, "Fixtures", "bbc-article.html");
+            var html = await File.ReadAllTextAsync(fixturePath);
 
             var extractor = GetExtractor();
             var article = extractor.Extract(html, new ExtractionOptions { Url = url });
@@ -206,7 +206,33 @@ namespace ReadableWeb.Tests
             article.Title.ShouldContain("Kate Winslet");
             article.TextContent.ShouldNotBeNullOrWhiteSpace();
             article.TextContent!.Length.ShouldBeGreaterThan(500);
-            article.TextContent.ShouldContain("A good meal and a good poo");
+            article.TextContent.ShouldContain("It was horrific. There were");
+            article.TextContent.ShouldContain("Joe Anders, she said she had");
+            article.TextContent.ShouldNotContain("&#x27;");
+            article.TextContent.ShouldNotContain("&#x");
+            article.TextContent.ShouldNotContain("&#");
+            article.Images.ShouldNotBeEmpty();
+        }
+
+        [Fact]
+        public async Task ExtractFromUrl_GuardianArticle_ParsesTitleContentAndImages()
+        {
+            var url = "https://www.theguardian.com/us-news/2025/dec/21/donald-trump-administration-news-updates-today-latest";
+
+            var fixturePath = Path.Combine(AppContext.BaseDirectory, "Fixtures", "guardian-article.html");
+            var html = await File.ReadAllTextAsync(fixturePath);
+
+            var extractor = GetExtractor();
+            var article = extractor.Extract(html, new ExtractionOptions { Url = url });
+
+            article.ShouldNotBeNull();
+            article.Url.ShouldBe(url);
+            article.Title.ShouldNotBeNullOrWhiteSpace();
+            article.Title.ShouldContain("Anger grows about redactions");
+            article.TextContent.ShouldNotBeNullOrWhiteSpace();
+            article.TextContent!.Length.ShouldBeGreaterThan(500);
+            article.TextContent.ShouldContain("The justice department’s document");
+            article.TextContent.ShouldContain("Massie said a future justice departmen");
             article.TextContent.ShouldNotContain("&#x27;");
             article.TextContent.ShouldNotContain("&#x");
             article.TextContent.ShouldNotContain("&#");

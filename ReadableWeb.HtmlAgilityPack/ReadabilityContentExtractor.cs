@@ -54,9 +54,16 @@ public class ReadabilityContentExtractor : IContentExtractor
     private (string TextContent, string Excerpt) ExtractMainContentInternal(HtmlDocument doc, CultureInfo culture)
     {
         var topCandidate = FindTopCandidate(doc, out var candidates);
+        var articleAncestor = topCandidate?
+            .AncestorsAndSelf()
+            .FirstOrDefault(n => n.Name.Equals("article", StringComparison.OrdinalIgnoreCase));
 
         HtmlNode articleNode;
-        if (topCandidate == null)
+        if (articleAncestor != null)
+        {
+            articleNode = articleAncestor.Clone();
+        }
+        else if (topCandidate == null)
         {
             articleNode = doc.DocumentNode.SelectSingleNode("//body") ?? doc.DocumentNode;
         }
@@ -85,7 +92,7 @@ public class ReadabilityContentExtractor : IContentExtractor
         foreach (var node in nodes)
         {
             var innerText = ExtractionUtils.GetInnerText(node);
-            if (innerText.Length < 25)
+            if (innerText.Length < 15)
                 continue;
 
             var parent = node.ParentNode;
