@@ -22,6 +22,8 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
   PROJECT_PATH: 'ReadableWeb/ReadableWeb.csproj'
+  ABSTRACTION_PROJECT_PATH: 'ReadableWeb.Abstractions/ReadableWeb.Abstractions.csproj'
+  HTMLAGILITYPACK_PROJECT_PATH: 'ReadableWeb.HtmlAgilityPack/ReadableWeb.HtmlAgilityPack.csproj'
 
 jobs:
   build-and-publish:
@@ -74,7 +76,6 @@ jobs:
       run: |
         dotnet pack ./ReadableWeb/ReadableWeb.csproj \
           --configuration Release \
-          --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.version.outputs.version }} \
           /p:Version=${{ steps.version.outputs.version }} \
@@ -82,6 +83,30 @@ jobs:
           /p:FileVersion=${{ steps.version.outputs.version }} \
           /p:InformationalVersion=${{ steps.version.outputs.version }} \
           /p:CI=true
+
+        if [ -n "${{ env.ABSTRACTION_PROJECT_PATH }}" ]; then \
+          dotnet pack "${{ env.ABSTRACTION_PROJECT_PATH }}" \
+            --configuration Release \
+            --output ./artifacts \
+            /p:PackageVersion=${{ steps.version.outputs.version }} \
+            /p:Version=${{ steps.version.outputs.version }} \
+            /p:AssemblyVersion=${{ steps.version.outputs.version }} \
+            /p:FileVersion=${{ steps.version.outputs.version }} \
+            /p:InformationalVersion=${{ steps.version.outputs.version }} \
+            /p:CI=true; \
+        fi
+
+        if [ -n "${{ env.HTMLAGILITYPACK_PROJECT_PATH }}" ]; then \
+          dotnet pack "${{ env.HTMLAGILITYPACK_PROJECT_PATH }}" \
+            --configuration Release \
+            --output ./artifacts \
+            /p:PackageVersion=${{ steps.version.outputs.version }} \
+            /p:Version=${{ steps.version.outputs.version }} \
+            /p:AssemblyVersion=${{ steps.version.outputs.version }} \
+            /p:FileVersion=${{ steps.version.outputs.version }} \
+            /p:InformationalVersion=${{ steps.version.outputs.version }} \
+            /p:CI=true; \
+        fi
     
     - name: Display packages to publish
       run: |

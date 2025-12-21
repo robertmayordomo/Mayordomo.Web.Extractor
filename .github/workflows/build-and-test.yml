@@ -9,7 +9,8 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
   PROJECT_PATH: 'ReadableWeb/ReadableWeb.csproj'
-  DOMAIN_PROJECT_PATH: 'ReadableWeb.Abstractions/ReadableWeb.Abstractions.csproj'
+  ABSTRACTION_PROJECT_PATH: 'ReadableWeb.Abstractions/ReadableWeb.Abstractions.csproj'
+  HTMLAGILITYPACK_PROJECT_PATH: 'ReadableWeb.HtmlAgilityPack/ReadableWeb.HtmlAgilityPack.csproj'
   TEST_PROJECT_PATH: 'ReadableWeb.Tests/ReadableWeb.Tests.csproj'  
 
 jobs:
@@ -98,8 +99,21 @@ jobs:
           /p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }} \
           /p:CI=true
         
-        if [ -n "${{ env.DOMAIN_PROJECT_PATH }}" ]; then \
-          dotnet pack ${{ env.DOMAIN_PROJECT_PATH }} \
+        if [ -n "${{ env.ABSTRACTION_PROJECT_PATH }}" ]; then \
+          dotnet pack ${{ env.ABSTRACTION_PROJECT_PATH }} \
+            --configuration Release \
+            --no-build \
+            --output ./artifacts \
+            /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }} \
+            /p:Version=${{ steps.gitversion.outputs.assemblySemVer }} \
+            /p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} \
+            /p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} \
+            /p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }} \
+            /p:CI=true; \
+        fi
+
+        if [ -n "${{ env.HTMLAGILITYPACK_PROJECT_PATH }}" ]; then \
+          dotnet pack ${{ env.HTMLAGILITYPACK_PROJECT_PATH }} \
             --configuration Release \
             --no-build \
             --output ./artifacts \

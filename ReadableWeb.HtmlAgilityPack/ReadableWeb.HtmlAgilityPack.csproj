@@ -4,6 +4,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PackageId>ReadableWeb.HtmlAgilityPack</PackageId>
+    <Title>ReadableWeb HtmlAgilityPack Extractor</Title>
+    <Description>HtmlAgilityPack-based article extraction for the ReadableWeb library.</Description>
+    <Authors>Robert Mayordomo</Authors>
+    <Company>ReadableWeb</Company>
+    <PackageTags>readability;article extraction;htmlagilitypack;content parsing;metadata</PackageTags>
+    <RepositoryUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>

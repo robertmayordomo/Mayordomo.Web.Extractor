@@ -4,6 +4,23 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PackageId>ReadableWeb.Abstractions</PackageId>
+    <Title>ReadableWeb Abstractions</Title>
+    <Description>Interfaces and models for ReadableWeb article extraction pipelines.</Description>
+    <Authors>Robert Mayordomo</Authors>
+    <Company>ReadableWeb</Company>
+    <PackageTags>readability;article extraction;content parsing;metadata</PackageTags>
+    <RepositoryUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/robertmayordomo/Mayordomo.Web.Extractor</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>
