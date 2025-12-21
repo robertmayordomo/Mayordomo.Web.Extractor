@@ -1,4 +1,4 @@
-Mayordomo.Web.Extractor
+ReadableWeb
 =======================
 
 Overview
@@ -7,13 +7,13 @@ Small, modular .NET 10 library and tools to extract article content, images and 
 
 Projects
 --------
-- `Mayordomo.Web.Extractor.Abstractions` — public interfaces for extractors and processors
-- `Mayordomo.Web.Extractor` — composition and higher-level services
-- `Mayordomo.Web.Extractor.HtmlAgilityPack` — HTML Agility Pack based extractor implementation
-- `Mayordomo.Web.Extractor.AngleSharp` — AngleSharp based extractor implementation
-- `Mayordomo.Web.Extractor.Tests` — unit tests
-- `Mayordomo.Web.Extractor.Benchmarks` — benchmark projects
-- `Mayordomo.Web.Extractor.TestConsole` — sample/test console app
+- `ReadableWeb.Abstractions` — public interfaces for extractors and processors
+- `ReadableWeb` — composition and higher-level services
+- `ReadableWeb.HtmlAgilityPack` — HTML Agility Pack based extractor implementation
+- `ReadableWeb.AngleSharp` — AngleSharp based extractor implementation
+- `ReadableWeb.Tests` — unit tests
+- `ReadableWeb.Benchmarks` — benchmark projects
+- `ReadableWeb.TestConsole` — sample/test console app
 
 Requirements
 ------------
@@ -25,7 +25,7 @@ Usage examples
 Quick extraction via the default HTTP helper:
 
 ```csharp
-using Mayordomo.Web.Extractor.Extraction;
+using ReadableWeb.Extraction;
 
 var extractor = HttpArticleExtractor.CreateDefault();
 var article = await extractor.ExtractFromUrlAsync(
@@ -42,8 +42,8 @@ foreach (var image in article.Images)
 Register the library in an ASP.NET Core or worker service using the provided DI extension:
 
 ```csharp
-using Mayordomo.Web.Extractor;
-using Mayordomo.Web.Extractor.Configuration;
+using ReadableWeb;
+using ReadableWeb.Configuration;
 
 builder.Services.AddArticleExtraction(builder.Configuration, "ArticleExtraction", options =>
 {
@@ -55,7 +55,7 @@ builder.Services.AddArticleExtraction(builder.Configuration, "ArticleExtraction"
 Expose the extractor through a minimal API endpoint:
 
 ```csharp
-using Mayordomo.Web.Extractor.Extraction;
+using ReadableWeb.Extraction;
 
 var app = builder.Build();
 
@@ -81,7 +81,7 @@ app.Run();
 Or wire it up in a conventional API controller:
 
 ```csharp
-using Mayordomo.Web.Extractor.Extraction;
+using ReadableWeb.Extraction;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -146,7 +146,7 @@ Run benchmarks
 Benchmarks use BenchmarkDotNet. Run from the benchmark project directory:
 
 ```bash
-dotnet run -c Release -p Mayordomo.Web.Extractor.Benchmarks
+dotnet run -c Release -p ReadableWeb.Benchmarks
 ```
 
 Package and publish
@@ -170,4 +170,4 @@ No license file included in the repository. Add a `LICENSE` file if you intend t
 
 Contact
 -------
-For local development questions, run the sample console app `Mayordomo.Web.Extractor.TestConsole` or inspect tests in `Mayordomo.Web.Extractor.Tests`.
+For local development questions, run the sample console app `ReadableWeb.TestConsole` or inspect tests in `ReadableWeb.Tests`.
