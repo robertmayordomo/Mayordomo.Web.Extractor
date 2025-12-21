@@ -67,7 +67,8 @@ public class ReadabilityContentExtractor : IContentExtractor
 
         CleanupArticleNode(articleNode);
 
-        var textContent = ExtractionUtils.NormalizeWhitespace(articleNode.InnerText);
+        var decodedText = HtmlEntity.DeEntitize(articleNode.InnerText);
+        var textContent = ExtractionUtils.NormalizeWhitespace(decodedText);
         var excerpt = ExtractionUtils.BuildExcerpt(textContent, culture);
 
         return (textContent, excerpt);
